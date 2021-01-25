@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.themyleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout/default" lang="en">
+
+<head>
+<title>Danh sách thành viên</title>
+</head>
+
+<body>
+	<div id="wrapper">
+		<div id="page-wrapper">
+			<div class="container-fluid" layout:fragment="content">
+				<div class="row bg-title">
+					<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+						<h4 class="page-title">Danh sách thành viên</h4>
+					</div>
+					<div class="col-lg-9 col-sm-8 col-md-8 col-xs-12 text-right">
+						<a th:if="${roleName} == ROLE_ADMIN" th:href="@{/user/add}" class="btn btn-primary">Thêm mới</a>
+					</div>
+					<!-- /.col-lg-12 -->
+				</div>
+				<!-- /row -->
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="white-box">
+							<div class="table-responsive">
+								<table class="table" id="example">
+									<thead>
+										<tr>
+											<th>STT</th>
+											<th>Họ Tên</th>
+											<th>Email</th>
+											<th>Quyền</th>
+											<th>#</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="user: ${users}">
+											<td th:text="${user.id}">1</td>
+											<td th:text="${user.fullName}"></td>
+											<td th:text="${user.email}"></td>
+											<td th:text="${user.roleDesc}"></td>
+											<td><a th:if="${roleName} == ROLE_ADMIN" th:href="@{/user/edit(id=${user.id})}"
+												class="btn btn-sm btn-info"> <i
+													class="fa fa-pencil-square-o"></i>
+											</a> <a th:if="${roleName} == ROLE_ADMIN" th:href="@{/user/delete(id=${user.id})}"
+												class="btn btn-sm btn-danger"> <i class="fa fa-trash-o"></i>
+											</a></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+		</div>
+		<!-- /#page-wrapper -->
+	</div>
+	<script layout:fragment="myScript">
+		let msgSuccess = "[[${msgSuccess}]]"
+		let msgError = "[[${msgError}]]";
+		if (msgSuccess) {
+			swal("Thành công", msgSuccess, "success");
+		}
+		if (msgError) {
+			swal("Thất bại", msgError, "error");
+		}
+	</script>
+</body>
+
+</html>

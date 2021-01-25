@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.themyleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout/default" lang="en">
+<head>
+    <title>Pixel Admin</title>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="page-wrapper">
+            <div class="container-fluid" layout:fragment="content">
+                <div class="row bg-title">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title">Danh sách công việc</h4>
+                    </div>
+                    <div th:if="${roleName} == ROLE_MANAGER" class="col-lg-9 col-sm-8 col-md-8 col-xs-12 text-right">
+                        <a th:href="@{/task/add}" class="btn btn-sm btn-success">Thêm mới</a>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /row -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <table class="table" id="example">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên Công Việc</th>
+                                            <th>Dự Án</th>
+                                            <th>Người Thực Hiện</th>
+                                            <th>Ngày Bắt Đầu</th>
+                                            <th>Ngày Kết Thúc</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Hành Động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="task: ${tasks}">
+                                            <td th:text="${task.id}">1</td>
+                                            <td th:text="${task.name}">Phân tích dự án</td>
+                                            <td th:text="${task.projectName}">Dự án CRM</td>
+                                            <td th:text="${task.userName}">Nguyễn Văn Tèo</td>
+                                            <td th:text="${task.startDate}">22/05/2019</td>
+                                            <td th:text="${task.endDate}">30/05/2019</td>
+                                            <td th:text="${task.statusName}">Đã hoàn thành</td>
+                                            <td>
+                                                <a th:if="${roleName} == ROLE_MANAGER" th:href="@{/task/edit(id=${task.id})}" class="btn btn-sm btn-primary">Sửa</a>
+                                                <a th:if="${roleName} == ROLE_MANAGER" th:href="@{/task/delete(id=${task.id})}" class="btn btn-sm btn-danger">Xóa</a>
+                                                <a th:if="${roleName} == ROLE_USER" th:href="@{/task/updateStatus(id=${task.id})}" class="btn btn-sm btn-info">Cập nhật</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<script layout:fragment="myScript">
+		let msgSuccess = "[[${msgSuccess}]]"
+		let msgError = "[[${msgError}]]";
+		if (msgSuccess) {
+			swal("Thành công", msgSuccess, "success");
+		}
+		if (msgError) {
+			swal("Thất bại", msgError, "error");
+		}
+	</script>
+</body>
+
+</html>

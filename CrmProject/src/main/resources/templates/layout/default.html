@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.themyleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/plugins/images/favicon.png}">
+    <title>Pixel Admin - Responsive Admin Dashboard Template build with Twitter Bootstrap</title>
+	<th:block th:replace="fragments/styles" />
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="wrapper">
+        <!-- Navigation -->
+		<div th:replace="fragments/navbar :: navbar"></div>
+		
+        <!-- Left navbar-header -->
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+		
+        <!-- Left navbar-header end -->
+        
+        
+        <!-- Page Content -->
+        <div id="page-wrapper">
+
+            <!-- /.container-fluid -->
+			<div class="container-fluid" layout:fragment="content"></div>
+            <!-- Footer -->
+            <div th:replace="fragments/footer :: footer"></div>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+	<th:block th:replace="fragments/scripts" />
+	<th:block layout:fragment="myScript" />
+</body>
+
+</html>

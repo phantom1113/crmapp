@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.themyleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout/default" lang="en">
+
+<head>
+<title>Pixel Admin</title>
+</head>
+
+<body>
+	<div id="page-wrapper">
+		<div class="container-fluid" layout:fragment="content">
+			<div class="row bg-title">
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+					<h4 class="page-title">Sửa thông tin thành viên</h4>
+				</div>
+			</div>
+			<!-- /.row -->
+			<!-- .row -->
+			<div class="row">
+				<div class="col-md-2 col-12"></div>
+				<div class="col-md-8 col-xs-12">
+					<div class="white-box">
+						<form class="form-horizontal form-material" method="post"
+							th:action="@{/user/edit}" th:object="${user}">
+							<input type="hidden" class="form-control" th:field="*{id}" />
+							<div class="form-group">
+								<label class="col-md-12">Họ tên</label>
+								<div class="col-md-12">
+									<input type="text" class="form-control form-control-line"
+										th:field="*{fullName}">
+									<div class="text-danger"
+										th:if="${#fields.hasErrors('fullName')}"
+										th:errors="*{fullName}"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="example-email" class="col-md-12">Email</label>
+								<div class="col-md-12">
+									<input type="email" class="form-control form-control-line"
+										th:field="*{email}">
+									<div class="text-danger" th:if="${#fields.hasErrors('email')}"
+										th:errors="*{email}"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-12">Mật khẩu</label>
+								<div class="col-md-12">
+									<input type="password" class="form-control form-control-line"
+										placeholder="Gõ password nếu muốn thay đổi"
+										th:field="*{password}">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-12">Avatar</label>
+								<input type="hidden" id="avatar" th:field="*{avatar}">
+								<div class="text-danger" th:if="${#fields.hasErrors('avatar')}"
+									th:errors="*{avatar}"></div>
+								<div id="dZUpload" class="dropzone">
+									<div class="dz-default dz-message"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-12">Chức vụ</label>
+								<div class="col-sm-12">
+									<select class="form-control form-control-line"
+										th:field="*{roleId}">
+										<option th:each="role : ${roles}" th:text="${role.desc}"
+											th:value="${role.id}">1</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<button type="submit" class="btn btn-success">Update
+										User</button>
+									<a th:href="@{/user}" class="btn btn-primary">Quay lại</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="col-md-2 col-12"></div>
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.container-fluid -->
+		<footer class="footer text-center"> 2018 &copy; myclass.com </footer>
+	</div>
+	<script layout:fragment="myScript">
+		let msgSuccess = "[[${msgSuccess}]]"
+		let msgError = "[[${msgError}]]";
+		if (msgSuccess) {
+			swal("Thành công", msgSuccess, "success");
+		}
+		if (msgError) {
+			swal("Thất bại", msgError, "error");
+		}
+		Dropzone.autoDiscover = false;
+		$(document).ready(function() {
+			let loadUrl = $("#dZUpload").data("load");
+			$("#dZUpload").dropzone({
+				url : "/file/upload",
+				addRemoveLinks : true,
+				paramName : "file",
+				acceptedFile : 'image/*, .jpg, .png, .jpeg',
+				success : function(file, response) {
+					var imgName = response.url;
+					file.previewElement.classList.add("dz-success");
+					$("#avatar").val(imgName);
+					console.log("Success uploaded: " + imgName);
+				},
+				error : function(file, response) {
+					console.log(response);
+					file.previewElement.classList.add("dz-error");
+				},
+				init : function() {
+					var thisDropzone = this;
+					$.ajax({
+						url: "/file/load",
+						type: 'GET',
+						dataType: 'JSON',
+						data: {
+							fileName: $('#avatar').val()
+						},
+						success: function(res){
+							if(res){
+								var mockFile = {name: res.name, size: 12345};
+								thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+								thisDropzone.options.thumbnail.call(thisDropzone, mockFile, res.url);
+								mockFile.previewElement.classList.add('dz-success');
+								mockFile.previewElement.classList.add('dz-comple');
+								$('.dz-image').last().find('img').attr({width: '100%', height: '100%'});
+							}
+						},
+						error: function(err){
+							console.log(err);
+						}
+					})
+				}
+			});
+		})
+	</script>
+</body>
+
+</html>

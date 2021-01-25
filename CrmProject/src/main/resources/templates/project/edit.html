@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.themyleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="layout/default" lang="en">
+<head>
+<title>Pixel Admin</title>
+</head>
+<body>
+	<div id="page-wrapper">
+		<div class="container-fluid" layout:fragment="content">
+			<div class="row bg-title">
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+					<h4 class="page-title">Sửa dự án</h4>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-12"></div>
+				<div class="col-md-8 col-xs-12">
+					<div class="white-box">
+						<form method="POST" class="form-horizontal form-material"
+							th:action="@{/project/edit}" th:object="${project}">
+							<input type="hidden" class="form-control" th:field="*{id}" />
+							<div class="form-group">
+								<label class="col-md-12">Tên dự án</label>
+								<div class="col-md-12">
+									<input type="text" placeholder="Tên công việc"
+										class="form-control form-control-line" th:field="*{name}">
+									<div class="text-danger"
+										th:if="${#fields.hasErrors('name')}"
+										th:errors="*{name}"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-12">Ngày bắt đầu</label>
+								<div class="col-md-12">
+									<input class="form-control" data-date-format="yyyy-dd-mm"
+										type="date" placeholder="yyyy-mm-dd" name="startDate" required
+										th:field="*{startDate}">
+									<div class="text-danger"
+										th:if="${#fields.hasErrors('startDate')}"><p>Ngày bị bỏ trống hoặc sai định dạng</p></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-12">Ngày kết thúc</label>
+								<div class="col-md-12">
+									<input class="form-control" data-date-format="yyyy-dd-mm"
+										type="date" placeholder="yyyy-mm-dd" name="endDate" required
+										th:field="*{endDate}">
+									<div class="text-danger"
+										th:if="${#fields.hasErrors('endDate')}"><p>Ngày bị bỏ trống hoặc sai định dạng</p></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<button type="submit" class="btn btn-success">Lưu lại</button>
+									<a th:href="@{/project}" class="btn btn-primary">Quay lại</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="col-md-2 col-12"></div>
+			</div>
+			<!-- /.row -->
+		</div>
+	</div>
+	<script layout:fragment="myScript">
+		let msgSuccess = "[[${msgSuccess}]]"
+		let msgError = "[[${msgError}]]";
+		if (msgSuccess) {
+			swal("Thành công", msgSuccess, "success");
+		}
+		if (msgError) {
+			swal("Thất bại", msgError, "error");
+		}
+	</script>
+</body>
+</html>
